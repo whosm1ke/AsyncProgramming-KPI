@@ -1,4 +1,4 @@
-﻿class Car
+﻿public class Car
 {
     private readonly ParkingLot parkingLot;
     private readonly string carName;

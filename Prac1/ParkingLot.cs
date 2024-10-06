@@ -1,13 +1,15 @@
-﻿class ParkingLot
+﻿public class ParkingLot
 {
     private SemaphoreSlim parkingSpots;
     private readonly int daySpots;
     private readonly int nightSpots;
+    private readonly TimeSpan workingTime;
 
-    public ParkingLot(int daySpots, int nightSpots)
+    public ParkingLot(int daySpots, int nightSpots, TimeSpan workingTime)
     {
         this.daySpots = daySpots;
         this.nightSpots = nightSpots;
+        this.workingTime = workingTime;
         this.parkingSpots = new SemaphoreSlim(daySpots);
     }
 
@@ -19,7 +21,6 @@
             try
             {
                 Console.WriteLine($"{car.CarName} has parked.");
-                // Симуляція часу паркування
                 await Task.Delay(car.ParkingTime);
                 Console.WriteLine($"{car.CarName} has left the parking lot.");
             }
@@ -43,8 +44,6 @@
 
     private bool IsParkingAllowed()
     {
-        TimeSpan currentTime = DateTime.Now.TimeOfDay;
-        TimeSpan closingTime = new TimeSpan(19, 0, 0); // 19:00
-        return currentTime < closingTime;
+        return DateTime.Now.TimeOfDay < workingTime;
     }
 }
